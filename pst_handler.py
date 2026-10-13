@@ -6,7 +6,7 @@ import ollama_handler as oh
 
 
 class Dataset:
-	def __init__(self, pst_filename:str, json_filename="vector_data.json":str, embedding_model:str):
+	def __init__(self, embedding_model:str, pst_filename:str, json_filename:str="vector_data.json"):
 		self.pst_filename = pst_filename
 		self.json_filename = json_filename
 		if (not(os.path.exists(json_filename))):
@@ -72,7 +72,7 @@ def extract_email_info(folders, pst_file):
 				print(f"\t\t\tSaved: {mail_info.subject}")
 
 # Removes unnaturally large words to remove bannner images which slaughter the context windows of smaller language models.
-def format_text(input_text:str, max_word_length=60:int):
+def format_text(input_text:str, max_word_length:str=60):
 	sorted_words = sorted(str(input_text).split(), key=len)
 	output_text = str(input_text)
 	while (len(sorted_words[-1]) > 60):
