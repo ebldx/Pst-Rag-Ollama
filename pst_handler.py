@@ -3,6 +3,7 @@ import json
 from aspose.email.storage.pst import PersonalStorage
 from aspose.email.mapi import MapiMessage
 import ollama_handler as oh
+import vectors
 
 
 class Dataset:
@@ -30,6 +31,16 @@ class Dataset:
 		json_file.write(json.dumps(vector_data))
 		json_file.close()
 		print(f"Embedding data saved to {this.json_filename}\n")
+
+	def check_similarity(self, vector:list):
+		json_file = open(this.json_filename, "r")
+		vector_data = json.loads(json_file)
+		json_file.close()
+
+		similarities = []
+		for i, email, email_vectors in enumerate(vector_data):
+			similarities.append(vectors.vector_similarity(email_vectors, vector[i]))
+		return similarities
 		
 
 # Add typehint.
