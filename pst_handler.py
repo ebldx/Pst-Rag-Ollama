@@ -39,7 +39,7 @@ class Dataset:
 
 		similarities = []
 		for i, email, email_vectors in enumerate(vector_data):
-			similarities.append(vectors.vector_similarity(email_vectors, vector[i]))
+			similarities.append((email, vectors.vector_similarity(email_vectors, vector[i])))
 		return similarities
 		
 
