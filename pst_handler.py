@@ -8,6 +8,7 @@ import vectors
 
 class Dataset:
 	def __init__(self, embedding_model:str, pst_filename:str, json_filename:str="vector_data.json"):
+		self.embedding_model = embedding_model
 		self.pst_filename = pst_filename
 		self.json_filename = json_filename
 		if (not(os.path.exists(json_filename))):
@@ -15,7 +16,7 @@ class Dataset:
 
 	def embed_pst(self):
 		pst_file = PersonalStorage.from_file(self.pst_filename)
-		folders = pst_file.root_folder.get_sub_folder()
+		folders = pst_file.root_folder.get_sub_folders()
 		print("Extracting emails...")
 		data = extract_email_info(folders, pst_file)
 		print("Embedding emails...")
@@ -27,13 +28,13 @@ class Dataset:
 			print(f"\t\tEmbedding finished.")
 			vector_data.append((email, email_vectors))
 			print(f"\t\tVector data saved.")
-		json_file = open(this.json_filename, "w")
+		json_file = open(self.json_filename, "w")
 		json_file.write(json.dumps(vector_data))
 		json_file.close()
-		print(f"Embedding data saved to {this.json_filename}\n")
+		print(f"Embedding data saved to {self.json_filename}\n")
 
 	def check_similarity(self, vector:list):
-		json_file = open(this.json_filename, "r")
+		json_file = open(self.json_filename, "r")
 		vector_data = json.loads(json_file)
 		json_file.close()
 
@@ -62,7 +63,7 @@ def extract_email_info(folders, pst_file):
 				print(f"\t\tEmail {email_nr}/{folder.content_count}")
 				email_info = pst_file.extract_message(email)
 				email_content = email_info.body
-				print(f"\t\t\tSubject: {mail_info.subject}")
+				print(f"\t\t\tSubject: {email_info.subject}")
 				if (len(email_content) <= 0):
 					print("\t\t\tNo email content, skipping...")
 				else:
@@ -80,19 +81,12 @@ def extract_email_info(folders, pst_file):
 					"content":email_content
 				}
 				output.append(email_data)
-				print(f"\t\t\tSaved: {mail_info.subject}")
+				print(f"\t\t\tSaved: {email_info.subject}")
+	return output
 
 # Removes unnaturally large words to remove bannner images which slaughter the context windows of smaller language models.
 def format_text(input_text:str, max_word_length:str=60):
-	sorted_words = sorted(str(input_text).split(), key=len)
-	output_text = str(input_text)
-	while (len(sorted_words[-1]) > 60):
-		output_text = " ".join(output_text.split(sorted_words[-1]))
-		sorted_words = sorted(str(input_text).split(), key=len)
-		if (len(output_text) <= 0):
-			output_text = str(input_text)
-			break #Text would've been emptied.
-	return output_text
+	return " ".join(word for word in input_text if (len(word) <= max_word_length))
 
 
 #
