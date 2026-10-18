@@ -1,0 +1,7 @@
+[project]
+name = "Pst-Rag-Ollama"
+version = "0.1"
+readme = "README.md"
+requires-python = ">=3.14"
+licence = { file = "LICENCE"}
+dependencies = ["ollama", "Aspose.Email-for-Python-via-NET"]
