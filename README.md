@@ -1,6 +1,15 @@
-TBF
+﻿# Retrieval-augmented Generation with .pst files
+Retrieval augmented generation with Outlook backup files using Python.
 
+- [Installation](#Installation)
 
+# Installation
+### Prerequisites:
+- Python
+- Pip
 
-Uses embedding and language models to integrate outlook backup(.pst) files.
-
+### Using GitHub CLI:
+```
+  pip install ollama Aspose.Email-for-Python-via-NET
+  gh repo clone ebldx/Bus-Vibration-Logger
+```
